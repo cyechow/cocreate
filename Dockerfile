@@ -1,1 +1,1 @@
-FROM geoffreybooth/meteor-base:2.5
+FROM registry.gitlab.com/tozd/docker/meteor:ubuntu-focal-2.5
