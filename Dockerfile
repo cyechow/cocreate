@@ -6,6 +6,9 @@ COPY startapp.sh bundle/
 # Use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html; this is expected for Meteor 2.5
 FROM node:14.18.1-alpine
 
+EXPOSE 80
+EXPOSE 443
+
 ENV APP_DIR=/meteor					    \
 	ROOT_URL=http://localhost			\
 	MAIL_URL=http://localhost:25		\
