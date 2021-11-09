@@ -11,12 +11,12 @@ ENV MONGO_OPLOG_URL mongodb://cocreateOpLogDbAdmin:Ia9F1DwQzlvb4zuS@cluster0-sha
 
 ENV METEOR_SETTINGS { "public": { "cors-anywhere": "https://ec-cors-anywhere.herokuapp.com/", "tex2svg": "https://cdn.jsdelivr.net/npm/tex2svg-webworker@0.3.2/dist/tex2svg.js" } }
 
-RUN echo $ROOT_URL
-RUN echo $MONGO_URL
+RUN echo $Env:ROOT_URL
+RUN echo $Env:MONGO_URL
 
 RUN ls -l
 
-RUN cp ./startapp.sh bundle/
+COPY startapp.sh bundle/
 
 WORKDIR /bundle
 RUN ls -l
