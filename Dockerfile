@@ -38,5 +38,6 @@ RUN echo "Installing the node modules..." \
 
 # start the app
 WORKDIR $APP_DIR/
+RUN ls -l
 USER node
 CMD ["/meteor/startapp.sh"]
