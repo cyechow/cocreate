@@ -14,7 +14,7 @@ ENV METEOR_SETTINGS { "public": { "cors-anywhere": "https://ec-cors-anywhere.her
 RUN echo $Env:ROOT_URL
 RUN echo $Env:MONGO_URL
 
-RUN cp startapp.sh bundle/
+RUN cp ./startapp.sh bundle/
 
 WORKDIR /bundle
 RUN ls -l
