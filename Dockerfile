@@ -1,3 +1,5 @@
+# FROM registry.gitlab.com/tozd/docker/nginx-proxy:ubuntu-focal as reverseproxy
+
 FROM registry.gitlab.com/tozd/docker/meteor:ubuntu-focal-2.5 as build
 
 COPY settings.json bundle/
@@ -16,7 +18,9 @@ ENV APP_DIR=/meteor					    \
     MONGO_OPLOG_URL="mongodb://mongodb/local" \
 	PORT=3000							\
 	NODE_ENV=production
-EXPOSE $PORT
+
+# EXPOSE $PORT
+EXPOSE 3000/tcp
 
 # Install as root (otherwise node-gyp gets compiled as nobody)
 USER root
@@ -38,6 +42,5 @@ RUN echo "Installing the node modules..." \
 
 # start the app
 WORKDIR $APP_DIR/
-RUN ls -l
 USER node
-CMD ["/meteor/startapp.sh"]
+CMD ["startapp.sh"]
