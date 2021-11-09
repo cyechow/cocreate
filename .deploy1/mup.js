@@ -1,9 +1,9 @@
 module.exports = {
   servers: {
     one: {
-      host: 'cocreate.csail.mit.edu',
+      host: '20.114.216.148',
       username: 'ubuntu',
-      pem: "/afs/csail/u/e/edemaine/.ssh/private/id_rsa"
+      pem: ""
       // pem:
       // password:
       // or leave blank for authenticate from ssh-agent
@@ -26,7 +26,7 @@ module.exports = {
       buildLocation: '/scratch/cocreate-build'
     },
     env: {
-      ROOT_URL: 'https://cocreate.csail.mit.edu',
+      ROOT_URL: 'https://20.114.216.148',
       //MAIL_URL: 'smtp://cocreate.csail.mit.edu:25?ignoreTLS=true',
       //MAIL_FROM: 'cocreate@cocreate.csail.mit.edu',
       MONGO_URL: 'mongodb://mongodb/meteor',

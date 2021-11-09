@@ -21,7 +21,7 @@ stages:
   jobs:
   - job: BuildImage
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'ubuntu-focal'
     steps:
     - task: Docker@2
       displayName: 'Build Docker Image'
