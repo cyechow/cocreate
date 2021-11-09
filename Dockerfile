@@ -1,21 +1,7 @@
 FROM registry.gitlab.com/tozd/docker/meteor:ubuntu-focal-2.5 as build
 
-# ENV ROOT_URL=https://app-dev-mm-cocreate.azurewebsites.net
-ENV ROOT_URL https://localhost:3000
-ENV PORT 3000
-ENV LOG_TO_STDOUT 1
-ENV MONGO_URL mongodb://cocreateDbAdmin:m66riulAisqaKNTF@cluster0-shard-00-00.hpgx7.mongodb.net:27017,cluster0-shard-00-01.hpgx7.mongodb.net:27017,cluster0-shard-00-02.hpgx7.mongodb.net:27017/meteor?ssl=true&replicaSet=atlas-ssttz4-shard-0&authSource=admin&retryWrites=true
-ENV MONGO_OPLOG_URL mongodb://cocreateOpLogDbAdmin:Ia9F1DwQzlvb4zuS@cluster0-shard-00-00.hpgx7.mongodb.net:27017,cluster0-shard-00-01.hpgx7.mongodb.net:27017,cluster0-shard-00-02.hpgx7.mongodb.net:27017/local?ssl=true&replicaSet=atlas-ssttz4-shard-0&authSource=admin&retryWrites=true
-
-# ENV METEOR_SETTINGS='{\"public\":{\"cors-anywhere\":\"https://ec-cors-anywhere.herokuapp.com/\",\"tex2svg\":\"https://cdn.jsdelivr.net/npm/tex2svg-webworker@0.3.2/dist/tex2svg.js\"}}'
-
-ENV METEOR_SETTINGS { "public": { "cors-anywhere": "https://ec-cors-anywhere.herokuapp.com/", "tex2svg": "https://cdn.jsdelivr.net/npm/tex2svg-webworker@0.3.2/dist/tex2svg.js" } }
-
 COPY settings.json bundle/
 COPY startapp.sh bundle/
-
-WORKDIR /bundle
-RUN ls -l
 
 # Use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html; this is expected for Meteor 2.5
 FROM node:14.18.1-alpine
@@ -23,8 +9,8 @@ FROM node:14.18.1-alpine
 ENV APP_DIR=/meteor					    \
 	ROOT_URL=http://localhost			\
 	MAIL_URL=http://localhost:25		\
-    MONGO_URL="mongodb://cocreateDbAdmin:m66riulAisqaKNTF@cluster0-shard-00-00.hpgx7.mongodb.net:27017,cluster0-shard-00-01.hpgx7.mongodb.net:27017,cluster0-shard-00-02.hpgx7.mongodb.net:27017/meteor?ssl=true&replicaSet=atlas-ssttz4-shard-0&authSource=admin&retryWrites=true" \
-    MONGO_OPLOG_URL="mongodb://cocreateOpLogDbAdmin:Ia9F1DwQzlvb4zuS@cluster0-shard-00-00.hpgx7.mongodb.net:27017,cluster0-shard-00-01.hpgx7.mongodb.net:27017,cluster0-shard-00-02.hpgx7.mongodb.net:27017/local?ssl=true&replicaSet=atlas-ssttz4-shard-0&authSource=admin&retryWrites=true" \
+    MONGO_URL="mongodb://mongodb/meteor" \
+    MONGO_OPLOG_URL="mongodb://mongodb/local" \
 	PORT=3000							\
 	NODE_ENV=production
 EXPOSE $PORT
