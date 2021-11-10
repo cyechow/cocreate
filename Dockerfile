@@ -34,11 +34,6 @@ COPY .proxy.config /etc/nginx/sites-enabled/
 # Check what's in here:
 RUN ls -l
 
-# Set the METEOR_SETTINGS env var:
-RUN export METEOR_SETTINGS=$(cat settings.json)
-
-RUN echo $METEOR_SETTINGS
-
 # start the app
 USER node
 ENTRYPOINT ["/docker/entrypoint.sh"]
