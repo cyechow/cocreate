@@ -10,7 +10,9 @@ ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
 
 # Copy nginx-proxy
-COPY --from=reverseproxy ./etc /etc
+COPY --from=reverseproxy ./etc/cron.daily /etc/cron.daily
+COPY --from=reverseproxy ./etc/nginx /etc/nginx
+COPY --from=reverseproxy ./etc/service /etc/service
 COPY --from=reverseproxy ./dockergen /dockergen
 COPY --from=reverseproxy ./letsencrypt /letsencrypt
 
