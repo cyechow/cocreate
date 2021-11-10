@@ -1,50 +1,40 @@
-# FROM registry.gitlab.com/tozd/docker/nginx-proxy:ubuntu-focal as reverseproxy
+FROM registry.gitlab.com/tozd/docker/nginx-proxy:ubuntu-focal as reverseproxy
 
 FROM registry.gitlab.com/tozd/docker/meteor:ubuntu-focal-2.5 as build
-
-COPY settings.json bundle/
-COPY startapp.sh bundle/
-COPY docker-entrypoint.sh bundle/
 
 # Use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html; this is expected for Meteor 2.5
 FROM node:14.18.1-alpine
 
-EXPOSE 80
-EXPOSE 443
+# Set folder env var - needed for the scripts as well:
+ENV APP_BUNDLE_FOLDER /opt/bundle
+ENV SCRIPTS_FOLDER /docker
 
-ENV APP_DIR=/meteor					    \
-	ROOT_URL=http://localhost			\
-	MAIL_URL=http://localhost:25		\
-    MONGO_URL="mongodb://mongodb/meteor" \
-    MONGO_OPLOG_URL="mongodb://mongodb/local" \
-	PORT=3000							\
-	NODE_ENV=production
+# Copy nginx-proxy
+COPY --from=reverseproxy ./etc /etc
+COPY --from=reverseproxy ./dockergen /dockergen
+COPY --from=reverseproxy ./letsencrypt /letsencrypt
 
-# EXPOSE $PORT
-EXPOSE 3000/tcp
+# Copy the docker scripts (copied/modified of relevant files from here: https://github.com/disney/meteor-base/tree/main/src/docker)
+COPY $SCRIPTS_FOLDER $SCRIPTS_FOLDER/
 
-# Install as root (otherwise node-gyp gets compiled as nobody)
-USER root
-WORKDIR $APP_DIR/programs/server/
+# Copy built bundle folder to this image's bundle folder:
+COPY --from=build ./bundle/ $APP_BUNDLE_FOLDER/bundle/
 
-# Copy bundle and scripts to the image APP_DIR
-COPY --from=build ./bundle/ $APP_DIR
+# Copy the settings
+COPY settings.json .
 
-# the install command for debian
-RUN echo "Installing the node modules..." \
-	&& npm install -g node-gyp \
-    && npm install --production --silent \
-	&& echo \
-	&& echo \
-	&& echo \
-	&& echo "Updating file permissions for the node user..." \
-	&& chmod -R 750 $APP_DIR \
-	&& chown -R node.node $APP_DIR
+# Copy the startup script:
+COPY startapp.sh .
 
-ENV METEOR_ALLOW_SUPERUSER true
+# Check what's in here:
+RUN ls -l
+
+# Set the METEOR_SETTINGS env var:
+RUN export METEOR_SETTINGS=$(cat settings.json)
+
+RUN $Env:METEOR_SETTINGS
 
 # start the app
-WORKDIR $APP_DIR/
 USER node
-# ENTRYPOINT [ "docker-entrypoint.sh" ]
-CMD ["startapp.sh"]
+ENTRYPOINT ["/docker/entrypoint.sh"]
+CMD ["node", "main.js"]
