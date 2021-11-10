@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# cd $APP_DIR
+echo $ROOT_URL
+
 echo "===> root_url: ${ROOT_URL}:${PORT}/"
 echo "===> port ${PORT}"
 echo "===> mail_url: ${MAIL_URL}"

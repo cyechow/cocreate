@@ -4,6 +4,7 @@ FROM registry.gitlab.com/tozd/docker/meteor:ubuntu-focal-2.5 as build
 
 COPY settings.json bundle/
 COPY startapp.sh bundle/
+COPY docker-entrypoint.sh bundle/
 
 # Use the specific version of Node expected by your Meteor release, per https://docs.meteor.com/changelog.html; this is expected for Meteor 2.5
 FROM node:14.18.1-alpine
@@ -40,7 +41,10 @@ RUN echo "Installing the node modules..." \
 	&& chmod -R 750 $APP_DIR \
 	&& chown -R node.node $APP_DIR
 
+ENV METEOR_ALLOW_SUPERUSER true
+
 # start the app
 WORKDIR $APP_DIR/
 USER node
+ENTRYPOINT [ "docker-entrypoint.sh" ]
 CMD ["startapp.sh"]
