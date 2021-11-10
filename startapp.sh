@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# cd $APP_DIR
+eval $(printenv | sed -n "s/^\([^=]\+\)=\(.*\)$/export \1=\2/p" | sed 's/"/\\\"/g' | sed '/=/s//="/' | sed 's/$/"/' >> /etc/profile)
 echo $ROOT_URL
 
+cd $APP_DIR
 echo "===> root_url: ${ROOT_URL}:${PORT}/"
 echo "===> port ${PORT}"
 echo "===> mail_url: ${MAIL_URL}"

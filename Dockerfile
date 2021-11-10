@@ -46,5 +46,5 @@ ENV METEOR_ALLOW_SUPERUSER true
 # start the app
 WORKDIR $APP_DIR/
 USER node
-ENTRYPOINT [ "docker-entrypoint.sh" ]
+# ENTRYPOINT [ "docker-entrypoint.sh" ]
 CMD ["startapp.sh"]
