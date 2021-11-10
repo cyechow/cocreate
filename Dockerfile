@@ -26,13 +26,18 @@ COPY settings.json .
 # Copy the startup script:
 COPY startapp.sh .
 
+# Copy the proxy config file, I think this is the place to put it...
+# https://gitlab.com/tozd/docker/nginx-proxy:
+# >   If extending the image, you can put sites configuration files under /etc/nginx/sites-enabled/ to add custom sites.
+COPY .proxy.config /etc/nginx/sites-enabled/
+
 # Check what's in here:
 RUN ls -l
 
 # Set the METEOR_SETTINGS env var:
 RUN export METEOR_SETTINGS=$(cat settings.json)
 
-RUN $Env:METEOR_SETTINGS
+RUN echo $METEOR_SETTINGS
 
 # start the app
 USER node
