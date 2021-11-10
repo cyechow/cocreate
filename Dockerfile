@@ -36,6 +36,8 @@ COPY .proxy.config /etc/nginx/sites-enabled/
 # Check what's in here:
 RUN ls -l
 
+RUN ["chmod", "+x", "/docker/entrypoint.sh"]
+
 # start the app
 USER node
 ENTRYPOINT ["/docker/entrypoint.sh"]
