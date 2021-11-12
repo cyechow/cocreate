@@ -7,7 +7,7 @@ FROM node:14.18.1-alpine
 
 # Set folder env var - needed for the scripts as well:
 ENV APP_BUNDLE_FOLDER /opt/bundle
-ENV SCRIPTS_FOLDER /docker
+ENV SCRIPTS_FOLDER /opt/docker
 
 # Copy nginx-proxy
 COPY --from=reverseproxy ./etc/cron.daily /etc/cron.daily
@@ -17,7 +17,7 @@ COPY --from=reverseproxy ./dockergen /dockergen
 COPY --from=reverseproxy ./letsencrypt /letsencrypt
 
 # Copy the docker scripts (copied/modified of relevant files from here: https://github.com/disney/meteor-base/tree/main/src/docker)
-COPY $SCRIPTS_FOLDER $SCRIPTS_FOLDER/
+COPY $SCRIPTS_FOLDER/ $SCRIPTS_FOLDER/
 
 # Copy built bundle folder to this image's bundle folder:
 COPY --from=build ./bundle/ $APP_BUNDLE_FOLDER/bundle/
@@ -44,9 +44,9 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh
 # Check what's in here:
 RUN ls -l
 
-RUN ["chmod", "+x", "/docker/entrypoint.sh"]
+RUN ["chmod", "+x", "/opt/docker/entrypoint.sh"]
 
 # start the app
 USER node
-ENTRYPOINT ["/docker/entrypoint.sh"]
+ENTRYPOINT ["/opt/docker/entrypoint.sh"]
 CMD ["node", "main.js"]
