@@ -2,11 +2,10 @@
 
 echo 'Copying over environment variables...'
 
-source /etc/profile
-
-eval $(printenv | sed -n "s/^\([^=]\+\)=\(.*\)$/export \1=\2/p" | sed 's/"/\\\"/g' | sed '/=/s//="/' | sed 's/$/"/' >> /etc/profile)
+# eval $(printenv | sed -n "s/^\([^=]\+\)=\(.*\)$/export \1=\2/p" | sed 's/"/\\\"/g' | sed '/=/s//="/' | sed 's/$/"/' >> /etc/profile)
 
 echo "${SCRIPTS_FOLDER}"
+echo "${MONGO_URL}"
 
 set -o errexit
 
