@@ -33,6 +33,11 @@ COPY startapp.sh .
 # >   If extending the image, you can put sites configuration files under /etc/nginx/sites-enabled/ to add custom sites.
 COPY .proxy.config /etc/nginx/sites-enabled/
 
+# Install bash and ca-certs:
+RUN apk --no-cache add \
+		bash \
+		ca-certificates
+
 # Check what's in here:
 RUN ls -l
 
