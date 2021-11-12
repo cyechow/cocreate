@@ -38,6 +38,9 @@ RUN apk --no-cache add \
 		bash \
 		ca-certificates
 
+# Install meteor deps:
+RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh
+
 # Check what's in here:
 RUN ls -l
 
