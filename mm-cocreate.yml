@@ -12,7 +12,7 @@ variables:
   acrHostName: 'crmassmotion.azurecr.io'
   acrName: 'crmassmotion'
   scName: 'arup-massmotion-dev-rg'
-  imageName: 'csmmcocreate'
+  imageName: 'cimmcocreate'
 
 stages:
 
